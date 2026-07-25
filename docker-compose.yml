@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: volunteer-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-volunteer_db}
+      POSTGRES_USER: ${DB_USERNAME:-volunteer_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-volunteer_pass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-volunteer_user} -d ${DB_NAME:-volunteer_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: volunteer-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-volunteer_db}
+      DB_USERNAME: ${DB_USERNAME:-volunteer_user}
+      DB_PASSWORD: ${DB_PASSWORD:-volunteer_pass}
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-in-prod}
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:

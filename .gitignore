@@ -1,0 +1,77 @@
+# Environment variables
+.env
+
+# Maven build output
+/target/
+
+
+.classpath
+.project
+.settings/
+
+
+.idea/
+*.iml
+out/
+
+# VS Code files
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+hs_err_pid*.log
+
+# Temporary files
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven wrapper local downloads
+.mvn/wrapper/maven-wrapper.jar
+
+# Generated dependency files
+dependency-reduced-pom.xml
+.release/*
+
+# Optional local settings
+local.properties
+
+# Docker
+docker-compose.override.yml
+
+# Test reports
+/surefire-reports/
+*/surefire-reports/
+
+# IDE project files
+*.iml
+*.ipr
+*.iws
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Optional npm/yarn artifacts
+node_modules/
+package-lock.json
+yarn.lock
+
