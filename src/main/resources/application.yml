@@ -5,7 +5,7 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   jpa:
     hibernate:
-      ddl-auto: validate   # schema is owned by Flyway, never auto-generated
+      ddl-auto: validate # schema is owned by Flyway, never auto-generated
     show-sql: false
   flyway:
     enabled: true
@@ -26,7 +26,7 @@ management:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:change-me-in-env-this-is-a-dev-only-default-secret}
+    secret: ${JWT_SECRET:dev-only-secret-change-in-prod-please-use-a-long-random-string}
     expiration-ms: 86400000
 
 springdoc:
