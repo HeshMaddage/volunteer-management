@@ -10,6 +10,12 @@ import com.volunteer.management.volunteer.VolunteerProfile;
 import com.volunteer.management.volunteer.VolunteerProfileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.volunteer.management.exception.InvalidStatusTransitionException;
+import com.volunteer.management.hourslog.HoursLog;
+import com.volunteer.management.hourslog.HoursLogRepository;
+import com.volunteer.management.registration.dto.AttendanceUpdateRequest;
+import com.volunteer.management.registration.dto.RosterEntryResponse;
+import java.time.Duration;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +26,7 @@ public class RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final ShiftRepository shiftRepository;
     private final VolunteerProfileRepository volunteerProfileRepository;
+    private final HoursLogRepository hoursLogRepository;
 
     private static final List<RegistrationStatus> ACTIVE_STATUSES = List.of(RegistrationStatus.REGISTERED,
             RegistrationStatus.ATTENDED);
@@ -27,10 +34,12 @@ public class RegistrationService {
     public RegistrationService(
             RegistrationRepository registrationRepository,
             ShiftRepository shiftRepository,
-            VolunteerProfileRepository volunteerProfileRepository) {
+            VolunteerProfileRepository volunteerProfileRepository,
+            HoursLogRepository hoursLogRepository) {
         this.registrationRepository = registrationRepository;
         this.shiftRepository = shiftRepository;
         this.volunteerProfileRepository = volunteerProfileRepository;
+        this.hoursLogRepository = hoursLogRepository;
     }
 
     @Transactional
@@ -69,6 +78,51 @@ public class RegistrationService {
         registration.setStatus(RegistrationStatus.CANCELLED);
     }
 
+    @Transactional
+    public RegistrationResponse markAttendance(UUID registrationId, AttendanceUpdateRequest request) {
+        RegistrationStatus newStatus = request.status();
+        if (newStatus != RegistrationStatus.ATTENDED && newStatus != RegistrationStatus.NO_SHOW) {
+            throw new InvalidStatusTransitionException(
+                    "Attendance can only be set to ATTENDED or NO_SHOW, got: " + newStatus);
+        }
+
+        Registration registration = registrationRepository.findById(registrationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Registration not found: " + registrationId));
+
+        if (registration.getStatus() != RegistrationStatus.REGISTERED) {
+            throw new InvalidStatusTransitionException(
+                    "Can only mark attendance on a REGISTERED registration, current status: "
+                            + registration.getStatus());
+        }
+
+        registration.setStatus(newStatus);
+
+        if (newStatus == RegistrationStatus.ATTENDED) {
+            createHoursLog(registration);
+        }
+
+        return toResponse(registration);
+    }
+
+    private void createHoursLog(Registration registration) {
+        var shift = registration.getShift();
+        double hours = Duration.between(shift.getStartTime(), shift.getEndTime()).toMinutes() / 60.0;
+
+        HoursLog hoursLog = HoursLog.builder()
+                .registration(registration)
+                .hours(hours)
+                .build();
+
+        hoursLogRepository.save(hoursLog);
+    }
+
+    public List<RosterEntryResponse> getRoster(UUID eventId) {
+        return registrationRepository.findByShift_Event_Id(eventId).stream()
+                .map(r -> new RosterEntryResponse(
+                        r.getId(), r.getShift().getId(), r.getVolunteer().getId(),
+                        r.getVolunteer().getFullName(), r.getStatus(), r.getRegisteredAt()))
+                .toList();
+    }
     // --- The two business rules, kept separate and independently testable ---
 
     private void checkNotAlreadyRegistered(UUID volunteerId, UUID shiftId) {
