@@ -57,4 +57,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(
                 Instant.now(), 409, "Conflict", ex.getMessage(), List.of()));
     }
+
+    @ExceptionHandler(InvalidStatusTransitionException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTransition(InvalidStatusTransitionException ex) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(
+                Instant.now(), 400, "Bad Request", ex.getMessage(), List.of()));
+    }
 }
