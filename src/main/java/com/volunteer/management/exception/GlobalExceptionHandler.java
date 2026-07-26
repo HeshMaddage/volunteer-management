@@ -45,4 +45,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(
                 Instant.now(), 401, "Unauthorized", "Invalid email or password", List.of()));
     }
+
+    @ExceptionHandler(ShiftFullException.class)
+    public ResponseEntity<ErrorResponse> handleShiftFull(ShiftFullException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(
+                Instant.now(), 409, "Conflict", ex.getMessage(), List.of()));
+    }
+
+    @ExceptionHandler(AlreadyRegisteredException.class)
+    public ResponseEntity<ErrorResponse> handleAlreadyRegistered(AlreadyRegisteredException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(
+                Instant.now(), 409, "Conflict", ex.getMessage(), List.of()));
+    }
 }
