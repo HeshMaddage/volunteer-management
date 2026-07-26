@@ -44,7 +44,7 @@ public class EventService {
         return toResponse(event);
     }
 
-    Event findEventOrThrow(UUID id) {
+    public Event findEventOrThrow(UUID id) {
         return eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found: " + id));
     }
