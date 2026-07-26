@@ -14,7 +14,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-volunteer_user} -d ${DB_NAME:-volunteer_db}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USERNAME:-volunteer_user} -d ${DB_NAME:-volunteer_db}",
+        ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -35,7 +39,7 @@ services:
       DB_NAME: ${DB_NAME:-volunteer_db}
       DB_USERNAME: ${DB_USERNAME:-volunteer_user}
       DB_PASSWORD: ${DB_PASSWORD:-volunteer_pass}
-      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-in-prod}
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-in-prod-please-use-a-long-random-string}
     ports:
       - "8080:8080"
 
