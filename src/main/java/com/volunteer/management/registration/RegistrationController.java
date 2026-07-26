@@ -37,4 +37,12 @@ public class RegistrationController {
                 .orElseThrow()
                 .getId();
     }
+
+    @PatchMapping("/api/v1/registrations/{registrationId}/attendance")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public com.volunteer.management.registration.dto.RegistrationResponse markAttendance(
+            @PathVariable UUID registrationId,
+            @org.springframework.web.bind.annotation.RequestBody @jakarta.validation.Valid com.volunteer.management.registration.dto.AttendanceUpdateRequest request) {
+        return registrationService.markAttendance(registrationId, request);
+    }
 }

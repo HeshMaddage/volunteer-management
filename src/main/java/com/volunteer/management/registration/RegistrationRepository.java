@@ -14,6 +14,8 @@ public interface RegistrationRepository extends JpaRepository<Registration, UUID
 
     Optional<Registration> findByVolunteerIdAndShiftId(UUID volunteerId, UUID shiftId);
 
+    List<Registration> findByShift_Event_Id(UUID eventId);
+
     /**
      * Counts only "active" registrations (REGISTERED or ATTENDED) against a
      * shift's capacity — CANCELLED/NO_SHOW rows must not count towards the

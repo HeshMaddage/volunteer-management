@@ -18,9 +18,12 @@ import java.util.UUID;
 public class EventController {
 
     private final EventService eventService;
+    private final com.volunteer.management.registration.RegistrationService registrationService;
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService,
+            com.volunteer.management.registration.RegistrationService registrationService) {
         this.eventService = eventService;
+        this.registrationService = registrationService;
     }
 
     @PostMapping
@@ -48,5 +51,12 @@ public class EventController {
     @PreAuthorize("hasRole('ADMIN')")
     public EventResponse cancel(@PathVariable UUID id) {
         return eventService.cancel(id);
+    }
+
+    @GetMapping("/{id}/roster")
+    @PreAuthorize("hasRole('ADMIN')")
+    public java.util.List<com.volunteer.management.registration.dto.RosterEntryResponse> getRoster(
+            @PathVariable UUID id) {
+        return registrationService.getRoster(id);
     }
 }
