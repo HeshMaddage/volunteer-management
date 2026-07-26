@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class Event {
 
     @Id
@@ -41,4 +42,8 @@ public class Event {
     void onCreate() {
         this.createdAt = Instant.now();
     }
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @Builder.Default
+    private java.util.List<com.volunteer.management.shift.Shift> shifts = new java.util.ArrayList<>();
 }
