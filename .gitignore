@@ -72,6 +72,5 @@ coverage/
 
 # Optional npm/yarn artifacts
 node_modules/
-package-lock.json
 yarn.lock
 
