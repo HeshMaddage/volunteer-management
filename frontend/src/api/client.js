@@ -13,4 +13,22 @@ client.interceptors.request.use((config) => {
     return config;
 });
 
+// Handle 401 Unauthorized errors globally
+client.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('email');
+            localStorage.removeItem('role');
+            
+            // Redirect to login page if we are not already on it
+            if (!window.location.pathname.startsWith('/login')) {
+                window.location.href = '/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default client;
