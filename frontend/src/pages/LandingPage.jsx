@@ -158,19 +158,19 @@ function LandingNavbar() {
             </div>
           ) : (
             <>
-              <Link
+              {/* <Link
                 to="/login"
                 className="lp-btn lp-btn-login"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Login
-              </Link>
+              </Link> */}
               <Link
-                to="/register"
+                to="/login"
                 className="lp-btn lp-btn-primary"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Get Started
+                Sign Up
               </Link>
             </>
           )}
