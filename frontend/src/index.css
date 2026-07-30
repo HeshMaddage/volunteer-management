@@ -72,7 +72,7 @@
 
   font: 16px/1.6 var(--font-body);
   letter-spacing: -0.011em;
-  color-scheme: light dark;
+  color-scheme: light;
   color: var(--color-text);
   background: var(--color-bg);
   text-rendering: optimizeLegibility;
@@ -84,6 +84,7 @@
 }
 
 [data-theme="dark"] {
+  color-scheme: dark;
   /* Theme System - Dark Mode (Warm dark slate/stone) */
   --color-bg: #121110;
   --color-bg-light: #181716;
