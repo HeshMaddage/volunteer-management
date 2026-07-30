@@ -119,7 +119,15 @@ export default function EventDetailPage() {
                 <div key={shift.id} className="shift-card">
                   <div className="shift-details">
                     <p><strong>Time:</strong> {formattedStart} - {formattedEnd}</p>
-                    <p><strong>Capacity:</strong> {shift.registeredCount} / {shift.capacity} filled</p>
+                    <div className="shift-capacity-container">
+                      <span className="shift-capacity-label"><strong>Capacity:</strong> {shift.registeredCount} / {shift.capacity} slots claimed</span>
+                      <div className="shift-capacity-bar-track">
+                        <div
+                          className={`shift-capacity-bar-fill ${isFull ? 'full' : ''}`}
+                          style={{ width: `${Math.min(100, (shift.registeredCount / shift.capacity) * 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
                     {shift.requiredSkills && shift.requiredSkills.length > 0 && (
                       <p>
                         <strong>Required Skills:</strong>{' '}

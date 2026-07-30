@@ -1,0 +1,403 @@
+/* Split Screen Layout */
+.login-page-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: var(--color-bg);
+  overflow: hidden;
+}
+
+/* Left Pane: Image Banner */
+.login-image-panel {
+  flex: 1.1;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 3.5rem;
+}
+
+.login-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0.75) 100%);
+  z-index: 1;
+}
+
+.login-image-text {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  max-width: 520px;
+}
+
+.login-image-text h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.login-image-text p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Right Pane: Form Area */
+.login-form-panel {
+  flex: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  background-color: var(--color-surface);
+  overflow-y: auto;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.login-header {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.login-header h1 {
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: var(--color-text-dark);
+}
+
+.login-header p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Form Fields */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-form-group label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-text-dark);
+  text-align: left;
+}
+
+/* Custom Input Wrapper matching image 2 */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  padding: 0 1rem;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--color-text-dark);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .input-wrapper,
+[data-theme="dark"] .input-wrapper:focus-within {
+  background: var(--color-bg);
+}
+
+.input-icon-left {
+  color: var(--color-text-muted);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.input-field {
+  border: none !important;
+  background: #ffffff !important;
+  padding: 0.85rem 0 !important;
+  font-size: 0.95rem !important;
+  width: 100% !important;
+  color: var(--color-text-dark) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .input-field {
+  background: var(--color-bg) !important;
+}
+
+/* Autocomplete/Autofill styles override to prevent browser defaults */
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover, 
+.input-field:-webkit-autofill:focus, 
+.input-field:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: var(--color-text-dark) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+[data-theme="dark"] .input-field:-webkit-autofill,
+[data-theme="dark"] .input-field:-webkit-autofill:hover, 
+[data-theme="dark"] .input-field:-webkit-autofill:focus, 
+[data-theme="dark"] .input-field:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg) inset !important;
+  -webkit-text-fill-color: var(--color-text-dark) !important;
+}
+
+.input-field::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.input-icon-right {
+  color: var(--color-text-muted);
+  cursor: pointer;
+  margin-left: 0.75rem;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-right:hover {
+  color: var(--color-text-dark);
+}
+
+/* Form Options: Checkbox & Forgot Password */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.checkbox-container input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-text-dark);
+  cursor: pointer;
+}
+
+.forgot-password-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.forgot-password-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Sign In Button */
+.signin-btn {
+  width: 100%;
+  background: #1c1917;
+  /* Slate 900 */
+  color: #ffffff;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.975rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  margin-top: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+}
+
+.signin-btn:hover:not(:disabled) {
+  background: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.12);
+}
+
+.signin-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.signin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dark theme button swap */
+[data-theme="dark"] .signin-btn {
+  background: #fafaf9;
+  /* Stone 50 */
+  color: #1c1917;
+}
+
+[data-theme="dark"] .signin-btn:hover:not(:disabled) {
+  background: #ffffff;
+}
+
+/* Sign Up Prompt */
+.signup-prompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.signup-prompt a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s ease;
+  margin-left: 0.25rem;
+}
+
+.signup-prompt a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Social Login ("Or With") */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--color-text-muted);
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.divider:not(:empty)::before {
+  margin-right: 1rem;
+}
+
+.divider:not(:empty)::after {
+  margin-left: 1rem;
+}
+
+.social-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--color-text-dark);
+}
+
+.social-btn:hover {
+  background: var(--color-bg-light);
+  border-color: var(--color-text-muted);
+}
+
+.social-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Stack */
+@media (max-width: 900px) {
+  .login-image-panel {
+    display: none;
+  }
+
+  .login-form-panel {
+    flex: 1;
+    padding: 1.5rem;
+  }
+}
