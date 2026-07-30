@@ -15,12 +15,84 @@ export default function CreateEventPage() {
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const [addedShifts, setAddedShifts] = useState([]);
-
   // UI state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [shiftError, setShiftError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+
+  // Image upload state
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imageUploadSuccess, setImageUploadSuccess] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+      setPreviewUrl(URL.createObjectURL(file));
+      setImageUploadError(null);
+      setImageUploadSuccess(false);
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+    if (uploadingImage) return; // Guard against duplicate calls
+    if (!selectedFile || !createdEvent) return;
+
+    setUploadingImage(true);
+    setImageUploadError(null);
+    setImageUploadSuccess(false);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      // Omit manual Content-Type header so Axios generates the correct boundary parameter
+      await client.post(`/events/${createdEvent.id}/image`, formData);
+
+      setImageUploadSuccess(true);
+      setSelectedFile(null);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
+    } catch (err) {
+      console.error('Failed to upload image:', err);
+      setImageUploadError(err.response?.data?.message || 'Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleCreateAnotherEvent = () => {
+    setCreatedEvent(null);
+    setSelectedFile(null);
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
+    setImageUploadSuccess(false);
+    setImageUploadError(null);
+    setTitle('');
+    setDescription('');
+    setLocation('');
+    setAddedShifts([]);
+  };
 
   useEffect(() => {
     async function fetchSkills() {
@@ -151,6 +223,47 @@ export default function CreateEventPage() {
             <p>{createdEvent.description}</p>
           </div>
 
+          <div className="image-upload-card">
+            <h3>Event Flyer / Image (Optional)</h3>
+            {imageUploadError && <p className="error-message">{imageUploadError}</p>}
+            {imageUploadSuccess && <p className="success-message">Image uploaded successfully!</p>}
+            
+            {!imageUploadSuccess && (
+              <div className="image-upload-controls">
+                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                  <input
+                    type="file"
+                    id="event-image-input"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="event-image-input" className="submit-btn secondary-btn" style={{ display: 'inline-block', cursor: 'pointer', textAlign: 'center' }}>
+                    {selectedFile ? 'Change Selected Image' : 'Select Image File'}
+                  </label>
+                  {selectedFile && <span style={{ marginLeft: '10px', fontSize: '0.9rem', color: 'var(--text)' }}>{selectedFile.name}</span>}
+                </div>
+                
+                {previewUrl && (
+                  <div className="image-preview-container" style={{ margin: '1rem 0', maxWidth: '300px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    <img src={previewUrl} alt="Preview" style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
+                  </div>
+                )}
+                
+                {selectedFile && (
+                  <button
+                    type="button"
+                    onClick={handleImageUpload}
+                    disabled={uploadingImage}
+                    className="submit-btn"
+                  >
+                    {uploadingImage ? 'Uploading Image...' : 'Upload Image'}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+
           {addedShifts.length > 0 && (
             <div className="added-shifts-list">
               <h4>Added Shifts</h4>
@@ -173,27 +286,29 @@ export default function CreateEventPage() {
             <h2>Add Shift to Event</h2>
             {shiftError && <p className="error-message">{shiftError}</p>}
 
-            <div className="form-group">
-              <label htmlFor="startTime">Start Date &amp; Time</label>
-              <input
-                type="datetime-local"
-                id="startTime"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="endTime">End Date &amp; Time</label>
-              <input
-                type="datetime-local"
-                id="endTime"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                required
-              />
-            </div>
+             <div className="form-group">
+               <label htmlFor="startTime">Start Date &amp; Time</label>
+               <input
+                 type="datetime-local"
+                 id="startTime"
+                 value={startTime}
+                 onChange={(e) => setStartTime(e.target.value)}
+                 onClick={(e) => e.target.showPicker()}
+                 required
+               />
+             </div>
+ 
+             <div className="form-group">
+               <label htmlFor="endTime">End Date &amp; Time</label>
+               <input
+                 type="datetime-local"
+                 id="endTime"
+                 value={endTime}
+                 onChange={(e) => setEndTime(e.target.value)}
+                 onClick={(e) => e.target.showPicker()}
+                 required
+               />
+             </div>
 
             <div className="form-group">
               <label htmlFor="capacity">Capacity (Volunteers needed)</label>
@@ -233,7 +348,7 @@ export default function CreateEventPage() {
           </form>
 
           <button
-            onClick={() => setCreatedEvent(null)}
+            onClick={handleCreateAnotherEvent}
             className="submit-btn"
             style={{ marginTop: '20px' }}
           >

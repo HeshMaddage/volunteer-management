@@ -63,4 +63,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorResponse(
                 Instant.now(), 400, "Bad Request", ex.getMessage(), List.of()));
     }
+
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceeded(
+            org.springframework.web.multipart.MaxUploadSizeExceededException ex) {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(new ErrorResponse(
+                Instant.now(), 413, "Payload Too Large", "The uploaded file exceeds the maximum allowed size of 5MB.", List.of()));
+    }
+
+    @ExceptionHandler(org.springframework.web.multipart.MultipartException.class)
+    public ResponseEntity<ErrorResponse> handleMultipart(
+            org.springframework.web.multipart.MultipartException ex) {
+        String message = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+        return ResponseEntity.badRequest().body(new ErrorResponse(
+                Instant.now(), 400, "Bad Request", "Multipart request parsing failed: " + message, List.of()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
+        ex.printStackTrace(); // Log the stack trace on the server for debugging
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(
+                Instant.now(), 500, "Internal Server Error", ex.getMessage(), List.of()));
+    }
 }

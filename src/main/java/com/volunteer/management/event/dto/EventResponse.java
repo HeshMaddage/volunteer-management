@@ -6,10 +6,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record EventResponse(
-        UUID id,
-        String title,
-        String description,
-        String location,
-        EventStatus status,
-        Instant createdAt) {
+                UUID id,
+                String title,
+                String description,
+                String location,
+                EventStatus status,
+                String imageUrl,
+                Instant createdAt) {
 }

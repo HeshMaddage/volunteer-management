@@ -4,6 +4,9 @@ const client = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
+export const API_ORIGIN = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1').replace(/\/api\/v1\/?$/, '');
+
+
 // Attach the JWT to every outgoing request, if we have one
 client.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');

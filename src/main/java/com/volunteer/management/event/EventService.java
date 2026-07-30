@@ -52,6 +52,6 @@ public class EventService {
     private EventResponse toResponse(Event event) {
         return new EventResponse(
                 event.getId(), event.getTitle(), event.getDescription(),
-                event.getLocation(), event.getStatus(), event.getCreatedAt());
+                event.getLocation(), event.getStatus(), event.getImageUrl(), event.getCreatedAt());
     }
 }

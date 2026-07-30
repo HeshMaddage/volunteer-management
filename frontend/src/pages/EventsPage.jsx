@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import client from '../api/client';
+import client, { API_ORIGIN } from '../api/client';
+import { Calendar } from 'lucide-react';
 
 export default function EventsPage() {
   const [events, setEvents] = useState([]);
@@ -106,23 +107,38 @@ export default function EventsPage() {
       ) : (
         <div className="events-list">
           {events.map((event) => (
-            <div key={event.id} className="event-card">
-              <div className="event-card-header">
-                <h2>{event.title}</h2>
-                <span className={`status-badge status-${event.status.toLowerCase()}`}>
-                  {event.status}
-                </span>
-              </div>
-              <p className="event-location">
-                <strong>Location:</strong> {event.location}
-              </p>
-              <p className="event-desc">{event.description}</p>
-              <div className="event-card-actions">
-                <Link to={`/events/${event.id}`} className="view-details-btn">
-                  View Shifts &amp; Details
-                </Link>
-              </div>
-            </div>
+             <div key={event.id} className="event-card">
+               <div className="event-card-image-container">
+                 {event.imageUrl ? (
+                   <img
+                     src={`${API_ORIGIN}${event.imageUrl}`}
+                     alt={event.title}
+                     className="event-card-image"
+                   />
+                 ) : (
+                   <div className="event-card-image-placeholder">
+                     <Calendar className="placeholder-icon" size={36} />
+                   </div>
+                 )}
+               </div>
+               <div className="event-card-body">
+                 <div className="event-card-header">
+                   <h2>{event.title}</h2>
+                   <span className={`status-badge status-${event.status.toLowerCase()}`}>
+                     {event.status}
+                   </span>
+                 </div>
+                 <p className="event-location">
+                   <strong>Location:</strong> {event.location}
+                 </p>
+                 <p className="event-desc">{event.description}</p>
+                 <div className="event-card-actions">
+                   <Link to={`/events/${event.id}`} className="view-details-btn">
+                     View Shifts &amp; Details
+                   </Link>
+                 </div>
+               </div>
+             </div>
           ))}
         </div>
       )}

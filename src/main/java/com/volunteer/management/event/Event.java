@@ -38,6 +38,9 @@ public class Event {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
     @PrePersist
     void onCreate() {
         this.createdAt = Instant.now();

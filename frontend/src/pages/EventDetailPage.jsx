@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
-import client from '../api/client';
+import client, { API_ORIGIN } from '../api/client';
 
 export default function EventDetailPage() {
   const { eventId } = useParams();
@@ -73,6 +73,11 @@ export default function EventDetailPage() {
 
   return (
     <div className="container">
+      {event.imageUrl && (
+        <div className="event-detail-banner">
+          <img src={`${API_ORIGIN}${event.imageUrl}`} alt={event.title} />
+        </div>
+      )}
       <div className="event-detail-header">
         <h1>{event.title}</h1>
         <div className="header-badges">
