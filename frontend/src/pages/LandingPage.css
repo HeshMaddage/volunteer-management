@@ -3,27 +3,27 @@
   --lp-primary-hover: var(--color-primary-hover);
   --lp-primary-light: var(--color-primary-light);
   --lp-primary-glow: var(--color-primary-glow);
-  
+
   --lp-accent: var(--color-accent);
   --lp-accent-hover: var(--color-accent-hover);
   --lp-accent-light: var(--color-accent-light);
-  
+
   --lp-bg-warm: var(--color-bg);
   --lp-bg-card: var(--color-surface);
   --lp-bg-light-cream: var(--color-bg-light);
-  
+
   --lp-text-dark: var(--color-text-dark);
   --lp-text-medium: var(--color-text);
   --lp-text-light: var(--color-text-muted);
-  
+
   --lp-border: var(--color-border);
   --lp-border-light: var(--color-border-light);
-  
+
   --lp-shadow-sm: var(--shadow-sm);
   --lp-shadow-md: var(--shadow-md);
   --lp-shadow-lg: var(--shadow-lg);
   --lp-shadow-hover: var(--shadow-hover);
-  
+
   --lp-font-sans: var(--font-body);
   --lp-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --lp-transition-fast: all 0.15s ease-out;
@@ -193,7 +193,8 @@
   border: none;
   text-align: left;
   padding: 0.6rem 1rem;
-  color: #ef4444; /* red-500 */
+  color: #ef4444;
+  /* red-500 */
   font-size: 0.9rem;
   border-radius: 6px;
   cursor: pointer;
@@ -306,20 +307,48 @@
 
 /* Hero Section */
 .lp-hero {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 4rem;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 5% 11rem;
   overflow: hidden;
+  clip-path: ellipse(150% 100% at 50% 0%);
+}
+
+.lp-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../assets/volunteers_landing_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  /* "little transparent" background overlay */
+  z-index: 0;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .lp-hero::before {
+  opacity: 0.08;
+  /* lower opacity for optimal text readability on dark theme */
 }
 
 .lp-hero-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .lp-hero-tagline {
@@ -359,6 +388,7 @@
 .lp-hero-ctas {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -606,8 +636,10 @@
 
 /* Footer Section */
 .lp-footer {
-  background-color: #171615; /* Extremely dark warm stone */
-  color: #a8a29e; /* Stone 400 */
+  background-color: #171615;
+  /* Extremely dark warm stone */
+  color: #a8a29e;
+  /* Stone 400 */
   padding: 4.5rem 5% 2.5rem;
   border-top: 1px solid #292524;
 }
@@ -630,7 +662,8 @@
 .lp-footer-title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #fafaf9; /* Stone 50 */
+  color: #fafaf9;
+  /* Stone 50 */
   margin: 0;
   letter-spacing: -0.02em;
   display: flex;
@@ -657,7 +690,8 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #e7e5e4; /* Stone 200 */
+  color: #e7e5e4;
+  /* Stone 200 */
   margin: 0;
 }
 
@@ -700,6 +734,7 @@
     opacity: 0;
     transform: translateY(4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -711,32 +746,31 @@
 /* Tablet & Smaller Layouts */
 @media (max-width: 1024px) {
   .lp-hero {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: 6rem;
+    padding-bottom: 8rem;
+    clip-path: ellipse(180% 100% at 50% 0%);
   }
-  
+
   .lp-hero-content {
     align-items: center;
     text-align: center;
   }
-  
+
   .lp-hero-heading {
     font-size: 2.75rem;
   }
-  
+
   .lp-hero-ctas {
     justify-content: center;
   }
-  
+
   .lp-steps-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     max-width: 500px;
     margin: 0 auto;
   }
-  
+
   .lp-features-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
@@ -748,17 +782,18 @@
   .lp-navbar {
     padding: 1rem 1.5rem;
   }
-  
+
   .lp-navbar.scrolled {
     padding: 0.8rem 1.5rem;
   }
-  
+
   .lp-nav-menu-toggle {
     display: block;
   }
-  
+
   .lp-nav-links {
-    display: none; /* Hide standard links on mobile */
+    display: none;
+    /* Hide standard links on mobile */
     position: absolute;
     top: 100%;
     left: 0;
@@ -771,11 +806,11 @@
     gap: 1rem;
     box-shadow: var(--lp-shadow-md);
   }
-  
+
   .lp-nav-links.active {
     display: flex;
   }
-  
+
   .lp-nav-actions {
     flex-direction: column;
     align-items: stretch;
@@ -784,13 +819,13 @@
     padding-top: 1rem;
     margin-top: 0.5rem;
   }
-  
+
   .lp-user-menu {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
   }
-  
+
   .lp-user-dropdown {
     position: static;
     box-shadow: none;
@@ -804,37 +839,37 @@
   .lp-section {
     padding: 4rem 1.5rem;
   }
-  
+
   .lp-section-title-wrapper {
     margin-bottom: 2.5rem;
   }
-  
+
   .lp-section-title {
     font-size: 1.75rem;
   }
-  
+
   .lp-hero-heading {
     font-size: 2.25rem;
   }
-  
+
   .lp-hero-text {
     font-size: 1.05rem;
   }
-  
+
   .lp-features-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
-  
+
   .lp-stats-container {
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
   .lp-cta-title {
     font-size: 1.85rem;
   }
-  
+
   .lp-footer-container {
     grid-template-columns: 1fr;
     gap: 2.5rem;

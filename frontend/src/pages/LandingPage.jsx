@@ -234,9 +234,6 @@ function HeroSection() {
           </Link>
         </div>
       </div>
-      <div className="lp-hero-visual">
-        <HeroIllustration />
-      </div>
     </section>
   );
 }
