@@ -1,3 +1,5 @@
+![CI](https://github.com/heshmaddage/volunteer-management/actions/workflows/ci.yml/badge.svg)
+
 # Volunteer Management System
 
 A volunteer management app: volunteer profiles with skills, events
